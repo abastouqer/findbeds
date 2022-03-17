@@ -57,6 +57,7 @@ class User(AbstractBaseUser,PermissionsMixin):
     dob = models.DateField('%Y-%m-%d',null=True)
     state = models.ForeignKey(StatsModel,on_delete=models.CASCADE
                               ,null=True,related_name ="state")
+    city = models.CharField(max_length=20)
     country = models.ForeignKey(CountryModel,on_delete=models.CASCADE
                                 ,null=True,related_name ="country")
     zipcode = models.CharField(max_length=5) 
@@ -64,6 +65,11 @@ class User(AbstractBaseUser,PermissionsMixin):
     
     shelter_name = models.CharField(max_length=50,help_text="Shelter name",blank=False)
     person_contact_name = models.CharField(max_length=50,help_text="Contact name",blank=False)
+    total_beds = models.IntegerField(null=True)
+    total_allow_reservation = models.IntegerField(null=True)
+    max_hold_time = models.TimeField(null=True)
+    
+    
     create_account = models.DateTimeField(default=django.utils.timezone.now)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
