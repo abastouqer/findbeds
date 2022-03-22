@@ -4,16 +4,18 @@ from rest_framework import viewsets
 from Individual.models import User
 from Individual.serializers import IndividualUserSerializer
 # Create your views here.
+
 class IndividualUserViewSet(viewsets.ViewSet):
+    
     def list(self,request):
-        user = User.objects.exclude(is_superuser=True).all()
+        user = User.objects.filter(is_individual=True)
         serializer = IndividualUserSerializer(user,many=True)
         return Response(serializer.data)
     
     def retrieve(self, request,pk):
         if pk is not None:
             try: 
-                user = User.objects.exclude(is_superuser=True).get(id=pk)
+                user = User.objects.exclude(is_superuser=True,is_shelter=True,is_organization=True).get(id=pk)
                 serializer = IndividualUserSerializer(user)
                 return Response(serializer.data)
             except:
@@ -35,6 +37,6 @@ class IndividualUserViewSet(viewsets.ViewSet):
             return Response({"msg":"Data Partial Updated"},status=status.HTTP_206_PARTIAL_CONTENT)
         return Response({"msg":"Fail"},status=status.HTTP_204_NO_CONTENT)
     def destroy(self,request,pk):
-        user = User.objects.get(id=pk)
+        user = User.objects.exclude(is_individual=True).get(id=pk)
         user.delete()
         return Response({"msg":"Sucessfully delete"})

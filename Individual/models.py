@@ -71,6 +71,9 @@ class User(AbstractBaseUser,PermissionsMixin):
     
     
     create_account = models.DateTimeField(default=django.utils.timezone.now)
+    is_individual = models.BooleanField(default=False)
+    is_organization = models.BooleanField(default=False)
+    is_shelter = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_superuser = models.BooleanField(default=False)

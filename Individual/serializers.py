@@ -12,7 +12,7 @@ class IndividualUserSerializer(serializers.ModelSerializer):
         Create and return a new `Snippet` instance, given the validated data.
         """
         validated_data['password'] = make_password(validated_data['password'])
-        return User.objects.create(**validated_data)
+        return User.objects.create(**validated_data,is_individual = True)
     
     def update(self, instance, validated_data):
         """

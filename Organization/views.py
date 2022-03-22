@@ -3,17 +3,19 @@ from rest_framework.response import Response
 from rest_framework import viewsets
 from Individual.models import User
 from .serializers import OrgUserSerializer
+from rest_framework.permissions import IsAuthenticated
 # Create your views here.
 class OrgUserViewSet(viewsets.ViewSet):
+    permission_classes = [IsAuthenticated]
     def list(self,request):
-        user = User.objects.all()
+        user = User.objects.filter(is_organization=True)
         serializer = OrgUserSerializer(user,many=True)
         return Response(serializer.data)
     
     def retrieve(self, request,pk):
         if pk is not None:
             try: 
-                user = User.objects.exclude(is_superuser=True).get(id=pk)
+                user = User.objects.exclude(is_superuser=True,is_shelter=True,is_individual=True).get(id=pk)
                 serializer = OrgUserSerializer(user)
                 return Response(serializer.data)
             except:
