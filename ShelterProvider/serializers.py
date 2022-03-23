@@ -1,11 +1,10 @@
 from django.contrib.auth.hashers import make_password
 from rest_framework import serializers
-from Individual.models import User
-from ShelterProvider.models import postData
+from ShelterProvider.models import postData,preData
 class ShelterUserSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = User
+        model = preData
         fields = ("username","shelter_name","address","password","email",
                   "phone","city","state","country","zipcode","total_beds","total_allow_reservation","max_hold_time","goip")
     def create(self, validated_data):
@@ -13,7 +12,7 @@ class ShelterUserSerializer(serializers.ModelSerializer):
         Create and return a new `Snippet` instance, given the validated data.
         """
         validated_data['password'] = make_password(validated_data['password'])
-        return User.objects.create(**validated_data,is_shelter=True)
+        return preData.objects.create(**validated_data,is_shelter=True)
     
     def update(self, instance, validated_data):
         """
@@ -43,7 +42,7 @@ class ShelterUserSerializer(serializers.ModelSerializer):
 
 class ShelterEditUserSeriliazer(serializers.ModelSerializer):
     class Meta:
-        model = User
+        model = postData
         fields = ("user","meal_provider","breakfast","Lunch","Dinner",
                   "Snacks","Dogs","Cat","PowerOutlets","ComputerAccess","WIFI","Shower","storage_avaliable","add_picture","discription","rules","housrs_intake","goip")
     def create(self, validated_data):
@@ -51,7 +50,7 @@ class ShelterEditUserSeriliazer(serializers.ModelSerializer):
         Create and return a new `Snippet` instance, given the validated data.
         """
         validated_data['password'] = make_password(validated_data['password'])
-        return User.objects.create(**validated_data,is_shelter=True)
+        return postData.objects.create(**validated_data,is_shelter=True)
     
     def update(self, instance, validated_data):
         """
@@ -80,3 +79,9 @@ class ShelterEditUserSeriliazer(serializers.ModelSerializer):
         instance.goip= validated_data.get('goip', instance.goip)
         instance.save()
         return instance
+    
+class ShelterUserResponseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = preData
+        fields = ("shelter_name","address",
+                  "phone","city""total_beds","total_allow_reservation")
