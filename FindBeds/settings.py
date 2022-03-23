@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'Organization',
     'ShelterProvider',
     "rest_framework",
+    "auth1",
+    "rest_framework_simplejwt",
 ]
 
 MIDDLEWARE = [

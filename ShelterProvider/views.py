@@ -5,6 +5,7 @@ from Individual.models import User
 from ShelterProvider.models import postData
 from .serializers import ShelterUserSerializer
 # Create your views here.
+    
 class ShelterUserViewSet(viewsets.ViewSet):
     def list(self,request):
         user = User.objects.filter(is_shelter=True)
